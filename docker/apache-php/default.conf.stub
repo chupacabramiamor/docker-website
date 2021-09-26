@@ -7,6 +7,6 @@
         AllowOverride All
     </Directory>
 
-    ServerName okeask.mxstudiopl
+    ServerName ${DN}
     # ErrorLog /var/www/html/logs/error.log
 </VirtualHost>
