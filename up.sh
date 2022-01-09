@@ -6,10 +6,17 @@ if ! [[ -f ./docker/.env ]]; then
     exit;
 fi
 
-HTTP_PORT=$(grep HTTP_PORT docker/.env | cut -d '=' -f 2-)
-PROJECT_NAME=$(grep PROJECT_NAME docker/.env | cut -d '=' -f 2-)
-CLIENT_NAME=$(grep CLIENT_NAME docker/.env | cut -d '=' -f 2-)
-DN="${PROJECT_NAME}.${CLIENT_NAME}"
+HTTP_PORT=$(grep ^HTTP_PORT docker/.env | cut -d '=' -f 2-)
+PROJECT_NAME=$(grep ^PROJECT_NAME docker/.env | cut -d '=' -f 2-)
+CLIENT_NAME=$(grep ^CLIENT_NAME docker/.env | cut -d '=' -f 2-)
+VENDOR_NAME=$(grep ^VENDOR_NAME docker/.env | cut -d '=' -f 2-)
+
+if [[ $VENDOR_NAME == "" ]]; then
+    DN="${PROJECT_NAME}.${CLIENT_NAME}"
+else
+    DN="${PROJECT_NAME}.${VENDOR_NAME}.${CLIENT_NAME}"
+fi
+
 CONTAINER_NAME="${CLIENT_NAME}.${PROJECT_NAME}"
 NGINX_CONF="/etc/nginx/sites-available/$CLIENT_NAME"
 
